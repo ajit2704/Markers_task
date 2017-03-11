@@ -14,22 +14,21 @@ int thresh = 90;
 
 int main(int argc, char* argv[])
 {
-	VideoCapture cap("/home/Downloads/task_marker_22_seconds.avi"); // open the video camera no. 0
-
-	if (!cap.isOpened())  // if not success, exit program
+	VideoCapture cap("/home/Downloads/task_marker_22_seconds.avi"); 
+	if (!cap.isOpened())  
 	{
 		cout << "Cannot open the video cam" << endl;
 		return -1;
 	}
 
-	double dWidth = cap.get(CV_CAP_PROP_FRAME_WIDTH); //get the width of frames of the video
-	double dHeight = cap.get(CV_CAP_PROP_FRAME_HEIGHT); //get the height of frames of the video
+	double dWidth = cap.get(CV_CAP_PROP_FRAME_WIDTH);
+	double dHeight = cap.get(CV_CAP_PROP_FRAME_HEIGHT); 
 
 	
 
 	cout << "Frame size : " << dWidth << " x " << dHeight << endl;
 
-	namedWindow("MyVideo", CV_WINDOW_AUTOSIZE); //create a window called &quot;MyVideo&quot;
+	namedWindow("MyVideo", CV_WINDOW_AUTOSIZE); 
 	
 	
 	while (1)
@@ -37,7 +36,7 @@ int main(int argc, char* argv[])
 		
 		Mat frame, canny_output;
 		
-		bool bSuccess = cap.read(frame); // read a new frame from video
+		bool bSuccess = cap.read(frame); 
 	
 		imshow("MyVideo", frame);
 
@@ -57,13 +56,12 @@ int main(int argc, char* argv[])
 
 		for (size_t i = 0; i < contours.size(); i++){
 			
-
 			approxPolyDP(contours[i], approxShape, arcLength(Mat(contours[i]), true)*0.4, true);
 		drawContours(drawing, contours, i, Scalar(0, 255, 255), CV_FILLED);   
 			
 
 			float ctArea = cv::contourArea(contours[i]);
-			if (ctArea < biggestContourArea + 10)
+			if (ctArea > biggestContourArea )
 			{
 				biggestContourArea = ctArea;
 				biggestContourIdx = i;
@@ -74,9 +72,9 @@ int main(int argc, char* argv[])
 		cv::Point2f corners[4];
 		boundingBox.points(corners);
                  float d1 = (float)norm(corners[0] - corners[1]);
-                 float d2 = (float)norm(corners[1] - pts[2]);
-                 float d3 = (float)norm(pts[2] - pts[3]);
-                 float d4= (float)norm(pts[3]-pts[0]);
+                 float d2 = (float)norm(corners[1] - corners[2]);
+                 float d3 = (float)norm(corners[2] - corners[3]);
+                 float d4= (float)norm(corners[3]-corners[0]);
                 if(max(d1,d2,d3,d4)==d1)
 		cv::line(drawing, corners[0], corners[1], cv::Scalar(255, 0, 0));
                  if(max(d1,d2,d3,d4)==d2)
