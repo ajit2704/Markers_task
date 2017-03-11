@@ -56,12 +56,11 @@ int main(int argc, char* argv[])
 		vector<Point> approxShape;
 
 		for (size_t i = 0; i < contours.size(); i++){
-			//approxPolyDP(contours[i], approxShape, arcLength(Mat(contours[i]), true)*0.04, true); tiiba eka 
+			
 
 			approxPolyDP(contours[i], approxShape, arcLength(Mat(contours[i]), true)*0.4, true);
-		drawContours(drawing, contours, i, Scalar(0, 255, 255), CV_FILLED);   // fill BLUE
-			//cv::Scalar color = cv::Scalar(0, 0, 0);
-			//	drawContours( drawing, contours, i, color, 1, 8, hierarchy, 0, cv::Point() );
+		drawContours(drawing, contours, i, Scalar(0, 255, 255), CV_FILLED);   
+			
 
 			float ctArea = cv::contourArea(contours[i]);
 			if (ctArea < biggestContourArea + 10)
@@ -74,10 +73,10 @@ int main(int argc, char* argv[])
 		cv::RotatedRect boundingBox = cv::minAreaRect(contours[biggestContourIdx]);
 		cv::Point2f corners[4];
 		boundingBox.points(corners);
-                 float d1 = (float)fabs(corners[0] - corners[1]);
-                 float d2 = (float)fabs(corners[1] - pts[2]);
-                 float d3 = (float)fabs(pts[2] - pts[3]);
-                 float d4= (float)fabs(pts[3]-pts[0]);
+                 float d1 = (float)norm(corners[0] - corners[1]);
+                 float d2 = (float)norm(corners[1] - pts[2]);
+                 float d3 = (float)norm(pts[2] - pts[3]);
+                 float d4= (float)norm(pts[3]-pts[0]);
                 if(max(d1,d2,d3,d4)==d1)
 		cv::line(drawing, corners[0], corners[1], cv::Scalar(255, 0, 0));
                  if(max(d1,d2,d3,d4)==d2)
@@ -91,18 +90,17 @@ int main(int argc, char* argv[])
 		cout << roi.width;
 		cout << "\n";
 		
-		if (!bSuccess) //if not success, break loop
+		if (!bSuccess) 
 		{
 			cout << "Cannot read a frame from video stream" << endl;
 			break;
 		}
 
-		imshow("MyVideo1";, drawing); //show the frame in &quot;MyVideo&quot; window
+		imshow("MyVideo1";, drawing); 
 
+	 
 
-	 //show the frame in &quot;MyVideo&quot; window
-
-		if (waitKey(30) == 27) //wait for &#39;esc&#39; key press for 30ms. If &#39;esc&#39; key is pressed, break loop
+		if (waitKey(30) == 27) 
 		{
 			cout << "esc key is pressed by user" << endl;
 			break;
