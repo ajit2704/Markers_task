@@ -77,9 +77,9 @@ int main(int argc, char* argv[])
                  Point2f corners[4]; boundingBox.points( corners );
        
                  if(norm(corners[0]-corners[1])>norm(corners[1]-corners[2]))
-                  cv::line( drawing, corners[0], corners[1], Scalar(0,255,0), 4, 8 );
+                  cv::line( drawing, corners[0], corners[1], Scalar(255,0,0), 4, 8 );
                  else
-                  cv::line( drawing, corners[1], corners[2], Scalar(0,255,0), 4, 8 );
+                  cv::line( drawing, corners[1], corners[2], Scalar(255,0,0), 4, 8 );
                 }
 
 		
