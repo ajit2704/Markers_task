@@ -3,12 +3,12 @@
 #include <stdlib.h>
 #include "opencv2/opencv.hpp"
 #include <iostream>
-#include <algorithm>
-#include <string>
-#include <array>
+
 
 using namespace cv;
 using namespace std;
+
+ 
 
 int thresh = 90;
 
@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
 		cvtColor(frame, frame, CV_RGB2GRAY);
 		blur(frame, frame, Size(5, 5));
 		frame = frame < 128;
-		vector<vector<Point>> contours;
+		vector<vector<Point> > contours;
 		vector<Vec4i> hierarchy;
 		Canny(frame, canny_output, thresh, thresh * 2, 3);
 		cv::dilate(canny_output, canny_output, cv::Mat(), cv::Point(-1, -1));
@@ -69,20 +69,22 @@ int main(int argc, char* argv[])
 		}
 
 		cv::RotatedRect boundingBox = cv::minAreaRect(contours[biggestContourIdx]);
-		cv::Point2f corners[4];
-		boundingBox.points(corners);
-                 float d1 = (float)norm(corners[0] - corners[1]);
-                 float d2 = (float)norm(corners[1] - corners[2]);
-                 float d3 = (float)norm(corners[2] - corners[3]);
-                 float d4= (float)norm(corners[3]-corners[0]);
-                if(max(d1,d2,d3,d4)==d1)
-		cv::line(drawing, corners[0], corners[1], cv::Scalar(255, 0, 0));
-                 if(max(d1,d2,d3,d4)==d2)
-		cv::line(drawing, corners[1], corners[2], cv::Scalar(255, 0, 0));
-                 if(max(d1,d2,d3,d4)==d3)
-		cv::line(drawing, corners[2], corners[3], cv::Scalar(255, 0, 0));
-                 if(max(d1,d2,d3,d4)==d4)
-		cv::line(drawing, corners[3], corners[0], cv::Scalar(255, 0, 0));	
+		 
+                 for( int i = 0; i< contours.size(); i++ )
+            {
+                Scalar color = Scalar( 255,0,0 );
+      
+                 Point2f corners[4]; boundingBox.points( corners );
+       
+                 if(norm(corners[0]-corners[1])>norm(corners[1]-corners[2]))
+                  cv::line( drawing, corners[0], corners[1], Scalar(0,255,0), 4, 8 );
+                 else
+                  cv::line( drawing, corners[1], corners[2], Scalar(0,255,0), 4, 8 );
+                }
+
+		
+		
+               	
 		Rect roi;
 		roi.width = boundingBox.size.width;
 		cout << roi.width;
@@ -94,7 +96,7 @@ int main(int argc, char* argv[])
 			break;
 		}
 
-		imshow("MyVideo1";, drawing); 
+		imshow("MyVideo1", drawing); 
 
 	 
 
